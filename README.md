@@ -1,3 +1,0 @@
-# dashboard
-
-Creating a dashboard
