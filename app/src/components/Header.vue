@@ -93,6 +93,7 @@ a {
 .application-wrap {
   margin: 0px;
   border: 0px;
+  padding: 0px;
 }
 
 #app .layout.pb-4 a.card:hover {

@@ -3,7 +3,7 @@
 </template>
 <script>
 import * as L from "leaflet";
-import d3 from "d3";
+import * as d3 from "d3";
 
 export default {
   name: "Map",
@@ -25,6 +25,21 @@ export default {
     ).addTo(mymap);
     // las rows del csv es un json
     // es un arreglo de objetos
+
+    // importar el archivo de csv con el metodo de d3
+    // use d3.csv to convert it into an array of objects
+    d3.csv(
+      "https://s3.amazonaws.com/images.rompeelmiedo.org/Reportes.csv"
+    ).then(function(data) {
+      console.log("the data object is " + data.length + " entries");
+      console.log("lat for first element is " + data[0].Latitud);
+      for (let i = 0; i < data.length; i++) {
+        L.marker([parseFloat(data[i].Latitud), parseFloat(data[i].Longitud)])
+          .addTo(mymap)
+          .bindPopup("A pretty CSS3 popup.<br> Easily customizable.")
+          .openPopup();
+      }
+    });
   }
 };
 </script>
@@ -33,5 +48,6 @@ export default {
   height: 400px;
   margin: 0px;
   border: 0px;
+  padding: 0px;
 }
 </style>

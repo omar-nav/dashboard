@@ -20,7 +20,7 @@ export default {};
   color: #2c3e50;
 }
 #nav {
-  padding: 30px;
+  padding: 0px;
   a {
     font-weight: bold;
     color: #2c3e50;
@@ -28,5 +28,10 @@ export default {};
       color: #42b983;
     }
   }
+}
+body {
+  padding: 0px;
+  border: 0px;
+  margin: 0px;
 }
 </style>
