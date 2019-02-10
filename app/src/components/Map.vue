@@ -46,7 +46,7 @@ export default {
         ? "#ffeb16"
         : d === "Uso ilegítimo del poder público"
         ? "#6c141c"
-        : "black ";
+        : "white";
     }
 
     function styleReportes(feature) {
@@ -56,17 +56,17 @@ export default {
         color: "grey",
         dashArray: "0",
         fillOpacity: 0.9,
-        fillColor: qualitativeColors(feature.properties["'Tipo de agresión'"])
+        fillColor: qualitativeColors(feature.properties["Tipo de agresión"])
       };
     }
     // CREAR CAJAS AL MOMENTO DE HACER CLIC
-    // function geojsonPopupPopulation(feature, layer) {
-    //   if (["Tipo de agresión"]) {
-    //     return layer.bindPopup(
-    //       "Tipo de Tipo de agresión:   " +
-    //         feature.properties.NAME_LONG        );
-    //   }
-    // }
+    function geojsonPopupReportes(feature, layer) {
+      if (["Tipo de agresión"]) {
+        return layer.bindPopup(
+          "Tipo de agresión:   " + feature.properties["Tipo de agresión"]
+        );
+      }
+    }
 
     // d3.csv(
     //   "https://s3.amazonaws.com/images.rompeelmiedo.org/Reportes.csv"
@@ -76,9 +76,9 @@ export default {
 
     let reportesLayer = L.geoJSON(reportesJSON, {
       style: styleReportes,
-      // onEachFeature: geojsonPopupReportes,
+      onEachFeature: geojsonPopupReportes,
       pointToLayer: function(feature, latlng) {
-        return L.marker(latlng);
+        return L.circleMarker(latlng);
       }
     });
     reportesLayer.addTo(mymap);
