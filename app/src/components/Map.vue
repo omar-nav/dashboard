@@ -3,7 +3,8 @@
 </template>
 <script>
 import * as L from "leaflet";
-import * as d3 from "d3";
+// import * as d3 from "d3";
+import reportesJSON from "./reportes.js";
 
 export default {
   name: "Map",
@@ -23,23 +24,74 @@ export default {
           "pk.eyJ1Ijoib21hci1uYXZhcnJvIiwiYSI6ImNpanN2ZWZxZzBoa291eWx4ZWdsajl1OGIifQ.SH4OG9811nirTGJ3rE4DHw"
       }
     ).addTo(mymap);
-    // las rows del csv es un json
-    // es un arreglo de objetos
 
-    // importar el archivo de csv con el metodo de d3
-    // use d3.csv to convert it into an array of objects
-    d3.csv(
-      "https://s3.amazonaws.com/images.rompeelmiedo.org/Reportes.csv"
-    ).then(function(data) {
-      console.log("the data object is " + data.length + " entries");
-      console.log("lat for first element is " + data[0].Latitud);
-      for (let i = 0; i < data.length; i++) {
-        L.marker([parseFloat(data[i].Latitud), parseFloat(data[i].Longitud)])
-          .addTo(mymap)
-          .bindPopup("A pretty CSS3 popup.<br> Easily customizable.")
-          .openPopup();
+    // COLORES
+    function qualitativeColors(d) {
+      return d === "Amenaza"
+        ? "#d21a2f"
+        : d === "Ataque a bienes materiales"
+        ? "#6292e2"
+        : d ===
+          "Ataque a redes, comunicaciones digitales y sistemas informáticos"
+        ? "#ff8e19"
+        : d === "Ataque físico"
+        ? "#d0e15c"
+        : d === "Bloqueo, alteración o remoción de información"
+        ? "#00b7af"
+        : d === "Intervención o vigilancia ilegal de comunicaciones"
+        ? "#ff47b7"
+        : d === "Intimidación y hostigamiento"
+        ? "#be2670"
+        : d === "Privación de la libertad"
+        ? "#ffeb16"
+        : d === "Uso ilegítimo del poder público"
+        ? "#6c141c"
+        : "black ";
+    }
+
+    function styleReportes(feature) {
+      return {
+        weight: 0.75,
+        opacity: 0.5,
+        color: "grey",
+        dashArray: "0",
+        fillOpacity: 0.9,
+        fillColor: qualitativeColors(feature.properties["'Tipo de agresión'"])
+      };
+    }
+    // CREAR CAJAS AL MOMENTO DE HACER CLIC
+    // function geojsonPopupPopulation(feature, layer) {
+    //   if (["Tipo de agresión"]) {
+    //     return layer.bindPopup(
+    //       "Tipo de Tipo de agresión:   " +
+    //         feature.properties.NAME_LONG        );
+    //   }
+    // }
+
+    // d3.csv(
+    //   "https://s3.amazonaws.com/images.rompeelmiedo.org/Reportes.csv"
+    // ).then(function(data) {
+    // console.log(data);
+    //       });
+
+    let reportesLayer = L.geoJSON(reportesJSON, {
+      style: styleReportes,
+      // onEachFeature: geojsonPopupReportes,
+      pointToLayer: function(feature, latlng) {
+        return L.marker(latlng);
       }
     });
+    reportesLayer.addTo(mymap);
+
+    // for (let i = 0; i < data.length; i++) {
+    //   L.marker([parseFloat(data[i].Latitud), parseFloat(data[i].Longitud)])
+    //     .addTo(mymap)
+    //     .bindPopup("A pretty CSS3 popup.<br> Easily customizable.")
+    //     .openPopup();
+    // }
+
+    // LEGEND STARTS HERE
+    var agresionesLeyenda = L.control({ position: "bottomleft" });
   }
 };
 </script>
