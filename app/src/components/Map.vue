@@ -12,14 +12,14 @@ export default {
     msg: String
   },
   mounted() {
-    var mymap = L.map("mapid").setView([19.39824, -99.148447], 13);
+    var mymap = L.map("mapid").setView([19.39824, -99.148447], 6);
     L.tileLayer(
       "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
       {
         attribution:
           'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         maxZoom: 18,
-        id: "mapbox.streets",
+        id: "mapbox.dark",
         accessToken:
           "pk.eyJ1Ijoib21hci1uYXZhcnJvIiwiYSI6ImNpanN2ZWZxZzBoa291eWx4ZWdsajl1OGIifQ.SH4OG9811nirTGJ3rE4DHw"
       }
@@ -47,6 +47,7 @@ export default {
         : d === "Uso ilegítimo del poder público"
         ? "#6c141c"
         : "white";
+      // address case of multiple types
     }
 
     function styleReportes(feature) {
@@ -92,14 +93,76 @@ export default {
 
     // LEGEND STARTS HERE
     var agresionesLeyenda = L.control({ position: "bottomleft" });
+
+    agresionesLeyenda.onAdd = function(mymap) {
+      var div = L.DomUtil.create("div", "info legend"),
+        gradeLabel = [
+          "Amenaza",
+          "Ataque a bienes materiales",
+          "Ataque a redes, comunicaciones digitales y sistemas informáticos",
+          "Ataque físico",
+          "Bloqueo, alteración o remoción de información",
+          "Intervención o vigilancia ilegal de comunicaciones",
+          "Intimidación y hostigamiento",
+          "Privación de la libertad",
+          "Uso ilegítimo del poder público",
+          "más de un tipo"
+        ],
+        labels = ["Tipo de agresión"],
+        code;
+      for (var i = 0; i < 10; i++) {
+        code = gradeLabel[i];
+        // display color patch and category text in legend
+        labels.push(
+          '<i style="background:' + qualitativeColors(code) + '"></i> ' + code
+        );
+      }
+      div.innerHTML = labels.join("<br>");
+      return div;
+    };
+
+    agresionesLeyenda.addTo(mymap);
   }
 };
 </script>
-<style scoped>
+<style>
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 #mapid {
   height: 400px;
   margin: 0px;
   border: 0px;
   padding: 0px;
+}
+/* legend */
+.legend {
+  width: 230px;
+  line-height: 18px;
+  color: #333333;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+.legend i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin-right: 18px;
+  opacity: 0.7;
+}
+.legend p {
+  font-size: 12px;
+  line-height: 18px;
+  margin: 0;
+}
+.info {
+  background-color: rgba(255, 255, 255) !important;
 }
 </style>
