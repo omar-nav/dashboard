@@ -95,7 +95,7 @@ export default {
     var agresionesLeyenda = L.control({ position: "bottomleft" });
 
     agresionesLeyenda.onAdd = function(mymap) {
-      var div = L.DomUtil.create("div", "info legend"),
+      var div = L.DomUtil.create("div", "legend"),
         gradeLabel = [
           "Amenaza",
           "Ataque a bienes materiales",
@@ -161,8 +161,5 @@ body {
   font-size: 12px;
   line-height: 18px;
   margin: 0;
-}
-.info {
-  background-color: rgba(255, 255, 255) !important;
 }
 </style>
