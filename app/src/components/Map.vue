@@ -108,16 +108,23 @@ export default {
           "Uso ilegítimo del poder público",
           "más de un tipo"
         ],
-        labels = ["Tipo de agresión"],
+        labels = [],
         code;
       for (var i = 0; i < 10; i++) {
         code = gradeLabel[i];
         // display color patch and category text in legend
         labels.push(
-          '<i style="background:' + qualitativeColors(code) + '"></i> ' + code
+          '<i style="background:' +
+            qualitativeColors(code) +
+            '"></i> ' +
+            '<p class="text-xs-left mb-0 pl-2">' +
+            code +
+            "</p> "
         );
       }
       div.innerHTML = labels.join("<br>");
+      // div.classList("text-xs-left mb-0 pl-2");
+      // div.addClass("text-xs-left mb-0 pl-2");
       return div;
     };
 
@@ -126,6 +133,8 @@ export default {
 };
 </script>
 <style>
+@import url("https://fonts.googleapis.com/css?family=Rajdhani");
+
 html {
   height: 100%;
 }
@@ -135,31 +144,40 @@ body {
   padding: 0;
 }
 #mapid {
-  height: 400px;
+  height: 600px;
+  z-index: 0;
   margin: 0px;
   border: 0px;
   padding: 0px;
 }
 /* legend */
 .legend {
-  width: 230px;
+  width: 300px;
   line-height: 18px;
-  color: #333333;
-  padding: 6px 8px;
-  background: rgba(255, 255, 255, 0.8);
+  color: #fff;
+  text-transform: uppercase;
+  background: #494949dd !important;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
+  font-family: Rajdhani, sans-serif;
+  font-size: 16px;
+  padding: 15px;
 }
+
+/* #mapid .legend p {
+    width: 300px;
+    line-height: 18px;
+    color: #fff;
+    text-transform: uppercase;
+    font-family: Rajdhani,sans-serif;
+    font-size: 16px;
+} */
+
 .legend i {
   width: 18px;
   height: 18px;
   float: left;
   margin-right: 18px;
   opacity: 0.7;
-}
-.legend p {
-  font-size: 12px;
-  line-height: 18px;
-  margin: 0;
 }
 </style>
