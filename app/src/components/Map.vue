@@ -2,8 +2,9 @@
   <div id="mapid"></div>
 </template>
 <script>
+import axios from "axios";
 import * as L from "leaflet";
-// import * as d3 from "d3";
+import * as d3 from "d3";
 import reportesJSON from "./reportes.js";
 
 export default {
@@ -11,7 +12,30 @@ export default {
   props: {
     msg: String
   },
+  data() {
+    return {
+      reports: []
+    };
+  },
+  methods: {
+    showAll() {
+      axios
+        .get("http://localhost:1337/report", {})
+        .then(response => {
+          this.reports = response.data.result;
+          console.log(
+            "hi, from show all method. Reports " + this.reports[0].Perpetrador
+          );
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
+  },
   mounted() {
+    this.showAll();
+
+    console.log("hi, from mounted");
     var mymap = L.map("mapid").setView([19.39824, -99.148447], 6);
     L.tileLayer(
       "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
