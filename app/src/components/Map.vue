@@ -23,9 +23,10 @@ export default {
         .get("http://localhost:1337/report", {})
         .then(response => {
           this.reports = response.data.result;
-          console.log(
-            "hi, from show all method. Reports " + this.reports[0].Perpetrador
-          );
+          // console.log(
+          //   "hi, from show all method called within mounted(). First element of key perpetrador" +
+          //     this.reports[0].Perpetrador
+          // );
         })
         .catch(function(error) {
           console.log(error);
@@ -34,8 +35,7 @@ export default {
   },
   mounted() {
     this.showAll();
-
-    console.log("hi, from mounted");
+    console.log(this.reports[0]);
     var mymap = L.map("mapid").setView([19.39824, -99.148447], 6);
     L.tileLayer(
       "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
